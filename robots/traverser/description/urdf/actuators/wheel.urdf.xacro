@@ -2,9 +2,10 @@
 <!-- XML namespaces -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="wheel" params="name parent *origin 
-                                      material_name:=black 
                                       length:=0.05 
-                                      radius:=0.05">
+                                      radius:=0.05
+                                      material_name:=black
+                                      gazebo_material_name:=Gazebo/Black">
 
         <joint name="${parent}_to_${name}_wheel_joint" type="continuous">
             <axis xyz="0 0 1"/>
@@ -26,6 +27,10 @@
                 </geometry>
             </collision>
         </link>
+
+        <gazebo reference="${name}_wheel_link">
+            <material>${gazebo_material_name}</material>
+        </gazebo>
 
     </xacro:macro>
 </robot>

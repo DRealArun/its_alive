@@ -7,7 +7,9 @@
                                           platform_height:=0.05
                                           wheel_thickness:=0.05
                                           wheel_radius:=0.05
-                                          wheel_height:=0.025">
+                                          wheel_height:=0.025
+                                          gazebo_platform_material:=Gazebo/Blue
+                                          gazebo_wheel_material:=Gazebo/Black">
 
         <!-- Include xacro files-->
         <xacro:include filename="$(find robot_common)/urdf/common.urdf.xacro" />
@@ -45,10 +47,15 @@
 
         </link>
 
+        <gazebo reference="${name}_link">
+            <material>${gazebo_platform_material}</material>
+        </gazebo>
+
         <!-- Wheels -->
         <xacro:wheel name="right_front" parent="${name}_link" 
                      length="${wheel_thickness}" radius="${wheel_radius}"
-                     material_name="black">
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
             <origin xyz="${(platform_length/2)-wheel_radius} 
                          ${-1*((platform_width/2)+(wheel_thickness/2))}
                          0"
@@ -57,7 +64,8 @@
 
         <xacro:wheel name="left_front" parent="${name}_link"
                      length="${wheel_thickness}" radius="${wheel_radius}"
-                     material_name="black">
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
             <origin xyz="${(platform_length/2)-wheel_radius} 
                          ${1*((platform_width/2)+(wheel_thickness/2))}
                          0"
@@ -66,7 +74,8 @@
 
         <xacro:wheel name="right_back" parent="${name}_link"
                      length="${wheel_thickness}" radius="${wheel_radius}"
-                     material_name="black">
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
             <origin xyz="${-1*((platform_length/2)-wheel_radius)}
                          ${-1*((platform_width/2)+(wheel_thickness/2))}
                          0"
@@ -75,7 +84,8 @@
 
         <xacro:wheel name="left_back" parent="${name}_link"
                      length="${wheel_thickness}" radius="${wheel_radius}"
-                     material_name="black">
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
             <origin xyz="${-1*((platform_length/2)-wheel_radius)} 
                          ${1*((platform_width/2)+(wheel_thickness/2))}
                          0"
