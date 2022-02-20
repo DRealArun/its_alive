@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>robot_common</name>
+  <version>0.1.0</version>
+  <description>Contains robot agnostic components which might find utility in variety of different robots.</description>
+
+  <author email="gitecarp@gmail.com">Arun Rajendra Prabhu.</author>
+  <maintainer email="gitecarp@gmail.com">Arun Rajendra Prabhu.</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslaunch</build_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+</package>
