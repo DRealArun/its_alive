@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!-- XML namespaces -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="traverser" params="name parent *origin 
+                                          platform_length:=0.4
+                                          platform_width:=0.2
+                                          platform_height:=0.05
+                                          wheel_thickness:=0.05
+                                          wheel_radius:=0.05
+                                          wheel_height:=0.025">
+
+        <!-- Include xacro files-->
+        <xacro:include filename="$(find robot_common)/urdf/common.urdf.xacro" />
+        <xacro:include filename="$(find traverser)/description/urdf/actuators/wheel.urdf.xacro" />
+
+        <joint name="${parent}_to_${name}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${name}_link"/>
+            <xacro:insert_block name="origin" />
+        </joint>
+
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <box size="${platform_length} 
+                               ${platform_width}
+                               ${platform_height}"/>
+                </geometry>
+                <origin rpy="0 0 0" xyz="0 0 ${(platform_height/2)-wheel_height}"/>
+                <material name="blue"/>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <box size="${platform_length}
+                               ${platform_width} 
+                               ${platform_height}"/>
+                </geometry>
+                <origin rpy="0 0 0" xyz="0 0 ${(platform_height/2)-wheel_height}"/>
+            </collision>
+
+            <xacro:cuboid_inertia mass="12" length="${platform_length}" 
+                                  breadth="${platform_width}" 
+                                  height="${platform_height}" />
+
+        </link>
+
+        <!-- Wheels -->
+        <xacro:wheel name="right_front" parent="${name}_link" 
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black">
+            <origin xyz="${(platform_length/2)-wheel_radius} 
+                         ${-1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+
+        <xacro:wheel name="left_front" parent="${name}_link"
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black">
+            <origin xyz="${(platform_length/2)-wheel_radius} 
+                         ${1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+
+        <xacro:wheel name="right_back" parent="${name}_link"
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black">
+            <origin xyz="${-1*((platform_length/2)-wheel_radius)}
+                         ${-1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+
+        <xacro:wheel name="left_back" parent="${name}_link"
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black">
+            <origin xyz="${-1*((platform_length/2)-wheel_radius)} 
+                         ${1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- XML namespaces -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="traverser" >
+
+    <!-- Include xacro files-->
+    <xacro:include filename="$(find robot_common)/urdf/materials.urdf.xacro" />
+    <xacro:include filename="$(find traverser)/description/urdf/traverser.urdf.xacro" />
+
+    <link name="base_link" />
+
+    <xacro:property name="traverser_wheel_radius" value="0.05"/>
+
+    <xacro:traverser name="base_body" parent="base_link" 
+                     wheel_radius="${traverser_wheel_radius}">
+        <!--This defines the co-ordinate transform from base_body to base_link -->
+        <!-- base link is on ground z = 0 and base_body_link is offset to z = `traverser_wheel_radius`.
+             ROS Nav needs a frame at axis of rotation on ground, which in our case is base_link -->
+        <origin xyz="0 0 ${traverser_wheel_radius}" rpy="0 0 0" /> 
+    </xacro:traverser>
+
+</robot>
