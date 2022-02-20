@@ -4,6 +4,7 @@
 
     <!-- Include xacro files-->
     <xacro:include filename="$(find robot_common)/urdf/materials.urdf.xacro" />
+    <xacro:include filename="$(find robot_common)/urdf/gazebo_ros_control.urdf.xacro" />
     <xacro:include filename="$(find traverser)/description/urdf/traverser.urdf.xacro" />
 
     <link name="base_link" />
