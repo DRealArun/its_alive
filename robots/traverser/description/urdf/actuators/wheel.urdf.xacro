@@ -7,6 +7,10 @@
                                       material_name:=black
                                       gazebo_material_name:=Gazebo/Black">
 
+        <xacro:property name="wheel_density" value="1522.0"/> <!-- rubber -->
+        <xacro:property name="wheel_mass"
+                        value="${wheel_density * pi * radius * radius * length}"/>
+
         <joint name="${parent}_to_${name}_wheel_joint" type="continuous">
             <axis xyz="0 0 1"/>
             <parent link="${parent}"/>
@@ -28,12 +32,18 @@
                 </geometry>
             </collision>
 
-            <xacro:cylinder_inertia mass="12" radius="${radius}"
+            <xacro:cylinder_inertia mass="${wheel_mass}" radius="${radius}"
                                     length="${length}" />
         </link>
 
         <gazebo reference="${name}_wheel_link">
             <material>${gazebo_material_name}</material>
+            <mu1>1.0</mu1>
+            <mu2>1.0</mu2>
+            <kp>1000000.0</kp> <!-- kp and kd for rubber -->
+            <kd>100.0</kd>
+            <maxVel>1.0</maxVel>
+            <minDepth>0.00</minDepth>
         </gazebo>
 
         <!-- <transmission name="${name}_wheel_link">

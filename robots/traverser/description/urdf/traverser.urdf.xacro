@@ -15,6 +15,10 @@
         <xacro:include filename="$(find robot_common)/urdf/common.urdf.xacro" />
         <xacro:include filename="$(find traverser)/description/urdf/actuators/wheel.urdf.xacro" />
 
+        <xacro:property name="platform_density" value="7850.0"/> <!-- steel -->
+        <xacro:property name="platform_mass"
+                        value="${platform_density * platform_length * platform_width * platform_height}"/>
+
         <gazebo>
             <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
                 <updateRate>50.0</updateRate>
@@ -28,9 +32,9 @@
                 <robotBaseFrame>${parent}</robotBaseFrame>
                 <torque>20</torque>
                 <broadcastTF>true</broadcastTF>
-                <commandTopic>/cmd_vel</commandTopic>
-                <odometryTopic>/odom</odometryTopic>
-                <odometryFrame>/odom</odometryFrame>
+                <commandTopic>cmd_vel</commandTopic>
+                <odometryTopic>odom</odometryTopic>
+                <odometryFrame>odom</odometryFrame>
                 <covariance_x>0.0001</covariance_x>
                 <covariance_y>0.0001</covariance_y>
                 <covariance_yaw>0.01</covariance_yaw>
@@ -63,7 +67,7 @@
                 <origin rpy="0 0 0" xyz="0 0 ${(platform_height/2)-wheel_height}"/>
             </collision>
 
-            <xacro:cuboid_inertia mass="12" length="${platform_length}" 
+            <xacro:cuboid_inertia mass="${platform_mass}" length="${platform_length}" 
                                   breadth="${platform_width}" 
                                   height="${platform_height}" />
 
