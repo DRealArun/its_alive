@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!-- XML namespaces -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="traverser" params="name parent *origin 
+                                          platform_length:=0.4
+                                          platform_width:=0.2
+                                          platform_height:=0.05
+                                          wheel_thickness:=0.05
+                                          wheel_radius:=0.05
+                                          wheel_height:=0.025
+                                          gazebo_platform_material:=Gazebo/Blue
+                                          gazebo_wheel_material:=Gazebo/Black">
+
+        <!-- Include xacro files-->
+        <xacro:include filename="$(find robot_common)/urdf/common.urdf.xacro" />
+        <xacro:include filename="$(find traverser)/description/urdf/actuators/wheel.urdf.xacro" />
+
+        <xacro:property name="platform_density" value="7850.0"/> <!-- steel -->
+        <xacro:property name="platform_mass"
+                        value="${platform_density * platform_length * platform_width * platform_height}"/>
+
+        <gazebo>
+            <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+                <updateRate>50.0</updateRate>
+                <robotNamespace>/</robotNamespace>
+                <leftFrontJoint>base_body_link_to_left_front_wheel_joint</leftFrontJoint>
+                <rightFrontJoint>base_body_link_to_right_front_wheel_joint</rightFrontJoint>
+                <leftRearJoint>base_body_link_to_left_back_wheel_joint</leftRearJoint>
+                <rightRearJoint>base_body_link_to_right_back_wheel_joint</rightRearJoint>
+                <wheelSeparation>${platform_width + wheel_thickness}</wheelSeparation>
+                <wheelDiameter>${2*wheel_radius}</wheelDiameter>
+                <robotBaseFrame>${parent}</robotBaseFrame>
+                <torque>20</torque>
+                <broadcastTF>true</broadcastTF>
+                <commandTopic>cmd_vel</commandTopic>
+                <odometryTopic>odom</odometryTopic>
+                <odometryFrame>odom</odometryFrame>
+                <covariance_x>0.0001</covariance_x>
+                <covariance_y>0.0001</covariance_y>
+                <covariance_yaw>0.01</covariance_yaw>
+            </plugin>
+        </gazebo>
+
+        <joint name="${parent}_to_${name}_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${name}_link"/>
+            <xacro:insert_block name="origin" />
+        </joint>
+
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <box size="${platform_length} 
+                               ${platform_width}
+                               ${platform_height}"/>
+                </geometry>
+                <origin rpy="0 0 0" xyz="0 0 ${(platform_height/2)-wheel_height}"/>
+                <material name="blue"/>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <box size="${platform_length}
+                               ${platform_width} 
+                               ${platform_height}"/>
+                </geometry>
+                <origin rpy="0 0 0" xyz="0 0 ${(platform_height/2)-wheel_height}"/>
+            </collision>
+
+            <xacro:cuboid_inertia mass="${platform_mass}" length="${platform_length}" 
+                                  breadth="${platform_width}" 
+                                  height="${platform_height}" />
+
+        </link>
+
+        <gazebo reference="${name}_link">
+            <material>${gazebo_platform_material}</material>
+        </gazebo>
+
+        <!-- Wheels -->
+        <xacro:wheel name="right_front" parent="${name}_link" 
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
+            <origin xyz="${(platform_length/2)-wheel_radius} 
+                         ${-1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+
+        <xacro:wheel name="left_front" parent="${name}_link"
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
+            <origin xyz="${(platform_length/2)-wheel_radius} 
+                         ${1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+
+        <xacro:wheel name="right_back" parent="${name}_link"
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
+            <origin xyz="${-1*((platform_length/2)-wheel_radius)}
+                         ${-1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+
+        <xacro:wheel name="left_back" parent="${name}_link"
+                     length="${wheel_thickness}" radius="${wheel_radius}"
+                     material_name="black"
+                     gazebo_material_name="${gazebo_wheel_material}">
+            <origin xyz="${-1*((platform_length/2)-wheel_radius)} 
+                         ${1*((platform_width/2)+(wheel_thickness/2))}
+                         0"
+                    rpy="${-pi/2} 0 0" />
+        </xacro:wheel>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="model" default="$(find traverser)/description/variants/traverser.urdf.xacro"/>
+    <arg name="gui" default="true" />
+
+    <arg name="use_rviz" default="false" />
+    <arg name="rviz_config" default="$(find traverser)/rviz/traverser.rviz" />
+
+    <arg name="init_x" default="0" />
+    <arg name="init_y" default="0" />
+    <arg name="init_theta" default="0" />
+
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+
+    <node pkg="joint_state_publisher" type="joint_state_publisher"
+          name="joint_state_publisher" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher"
+          name="robot_state_publisher" />
+
+    <node if="$(arg use_rviz)" pkg="rviz" type="rviz" name="traverser_rviz"
+          args="-d $(arg rviz_config)" />
+
+    <include file="$(find robot_common)/launch/simulation.launch">
+        <arg name="gui" value="$(arg gui)" />
+    </include >
+
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_traverser"
+          args="-param robot_description -urdf -model traverser
+                -x $(arg init_x) -y $(arg init_y) -z 0.0 -Y $(arg init_theta)" />
+
+</launch>

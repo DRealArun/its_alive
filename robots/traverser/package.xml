@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>traverser</name>
+  <version>0.1.0</version>
+  <description>Traverser is a basic mobile platform. This package contains xacro/urdf description for traverser.</description>
+
+  <author email="gitecarp@gmail.com">Arun Rajendra Prabhu.</author>
+  <maintainer email="gitecarp@gmail.com">Arun Rajendra Prabhu.</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslaunch</build_depend>
+  <exec_depend>robot_common</exec_depend>
+
+</package>
