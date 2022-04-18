@@ -20,24 +20,12 @@
                         value="${platform_density * platform_length * platform_width * platform_height}"/>
 
         <gazebo>
-            <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
-                <updateRate>50.0</updateRate>
-                <robotNamespace>/</robotNamespace>
-                <leftFrontJoint>base_body_link_to_left_front_wheel_joint</leftFrontJoint>
-                <rightFrontJoint>base_body_link_to_right_front_wheel_joint</rightFrontJoint>
-                <leftRearJoint>base_body_link_to_left_back_wheel_joint</leftRearJoint>
-                <rightRearJoint>base_body_link_to_right_back_wheel_joint</rightRearJoint>
-                <wheelSeparation>${platform_width + wheel_thickness}</wheelSeparation>
-                <wheelDiameter>${2*wheel_radius}</wheelDiameter>
-                <robotBaseFrame>${parent}</robotBaseFrame>
-                <torque>20</torque>
-                <broadcastTF>true</broadcastTF>
-                <commandTopic>cmd_vel</commandTopic>
-                <odometryTopic>odom</odometryTopic>
-                <odometryFrame>odom</odometryFrame>
-                <covariance_x>0.0001</covariance_x>
-                <covariance_y>0.0001</covariance_y>
-                <covariance_yaw>0.01</covariance_yaw>
+            <plugin name="traverser_controller" filename="libtraverser_controller_plugin.so">
+                <commandTopic>/cmd_vel</commandTopic>
+                <odometryTopic>/odom</odometryTopic>
+                <odometryFrame>/odom</odometryFrame>
+                <odometryRate>20.0</odometryRate>
+                <robotBaseFrame>/base_link</robotBaseFrame>
             </plugin>
         </gazebo>
 

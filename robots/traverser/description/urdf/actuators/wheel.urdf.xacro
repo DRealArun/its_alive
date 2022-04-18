@@ -38,23 +38,9 @@
 
         <gazebo reference="${name}_wheel_link">
             <material>${gazebo_material_name}</material>
-            <mu1>1.0</mu1>
-            <mu2>1.0</mu2>
-            <kp>1000000.0</kp> <!-- kp and kd for rubber -->
-            <kd>100.0</kd>
-            <maxVel>1.0</maxVel>
-            <minDepth>0.00</minDepth>
+            <mu1>0.0</mu1>
+            <mu2>0.0</mu2>
         </gazebo>
-
-        <!-- <transmission name="${name}_wheel_link">
-            <type>transmission_interface/SimpleTransmission</type>
-            <joint name="${parent}_to_${name}_wheel_joint">
-                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-            </joint>
-            <actuator name="${name}_wheel_motor">
-                <mechanicalReduction>1</mechanicalReduction>
-            </actuator>
-        </transmission> -->
 
     </xacro:macro>
 </robot>
